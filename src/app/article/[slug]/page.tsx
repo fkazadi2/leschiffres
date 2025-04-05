@@ -11,10 +11,17 @@ import { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 
 // Import dynamique du composant client (côté navigateur uniquement)
-const ArticleClient = dynamic(() => import('./page.client'), { ssr: false });
+const ArticleClient = dynamic(() => import('./page.client'));
+
+// Type pour les paramètres de page
+type ArticlePageParams = {
+  params: {
+    slug: string;
+  };
+};
 
 // Fonction pour générer les métadonnées dynamiques
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+export async function generateMetadata({ params }: ArticlePageParams): Promise<Metadata> {
   const article = await getArticleBySlug(params.slug);
   
   if (!article) {
@@ -90,7 +97,7 @@ function ArticleContent({ content }: { content: string }) {
 }
 
 // Page principale de l'article
-export default async function ArticlePage({ params }: { params: { slug: string } }) {
+export default async function ArticlePage({ params }: ArticlePageParams) {
   const article = await getArticleBySlug(params.slug);
   
   if (!article) {
@@ -120,7 +127,7 @@ export default async function ArticlePage({ params }: { params: { slug: string }
         <div className="text-sm mb-6 text-[var(--text-muted)]">
           <Link href="/" className="hover:text-[var(--primary)] transition-colors">Accueil</Link>
           <span className="mx-2">/</span>
-          <Link href={`/categories/${article.category.toLowerCase()}`} className="hover:text-[var(--primary)] transition-colors">
+          <Link href={`/categorie/${article.category.toLowerCase()}`} className="hover:text-[var(--primary)] transition-colors">
             {article.category}
           </Link>
           <span className="mx-2">/</span>
@@ -192,7 +199,7 @@ export default async function ArticlePage({ params }: { params: { slug: string }
         {article.tags && article.tags.length > 0 && (
           <div className="my-8">
             <div className="flex flex-wrap gap-2">
-              {article.tags.map((tag, index) => (
+              {article.tags.map((tag: string, index: number) => (
                 <Link 
                   key={index}
                   href={`/tags/${tag.toLowerCase()}`}

@@ -1,18 +1,23 @@
 import { createClient } from '@supabase/supabase-js';
 import { getLocalImageUrl } from './imageUtils';
 
-// Vérification des variables d'environnement
-if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
-  console.error('Missing env.NEXT_PUBLIC_SUPABASE_URL');
-}
-if (!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-  console.error('Missing env.NEXT_PUBLIC_SUPABASE_ANON_KEY');
+// Vérification si nous sommes en développement
+const isDevelopment = process.env.NODE_ENV !== 'production';
+
+// Vérification des variables d'environnement seulement en production
+if (!isDevelopment) {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
+    console.error('Missing env.NEXT_PUBLIC_SUPABASE_URL');
+  }
+  if (!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    console.error('Missing env.NEXT_PUBLIC_SUPABASE_ANON_KEY');
+  }
 }
 
-// Création du client Supabase
+// Création du client Supabase avec des valeurs factices en développement
 export const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL || '',
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
+  isDevelopment ? 'https://example.supabase.co' : (process.env.NEXT_PUBLIC_SUPABASE_URL || ''),
+  isDevelopment ? 'fake_key_for_development_only' : (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '')
 );
 
 // Types pour les articles
@@ -62,9 +67,6 @@ export async function getArticles(limit = 10, offset = 0) {
 export async function getArticleBySlug(slug: string) {
   try {
     // En développement, utiliser les données simulées
-    // Dans un environnement de production, cette vérification pourrait utiliser process.env.NODE_ENV
-    const isDevelopment = true;
-
     if (isDevelopment) {
       // Récupérer les données simulées
       const mockArticle = getMockArticleData(slug);
@@ -91,8 +93,6 @@ export async function getArticleBySlug(slug: string) {
 export async function getRecentArticles(limit = 3) {
   try {
     // En développement, utiliser les données simulées
-    const isDevelopment = true;
-
     if (isDevelopment) {
       // Créer quelques slugs aléatoires pour les articles récents
       const slugs = [
@@ -148,8 +148,6 @@ export async function getArticlesByCategory(category: string, limit = 10, offset
 export async function incrementArticleViews(articleId: string) {
   try {
     // En développement, simuler l'incrémentation
-    const isDevelopment = true;
-
     if (isDevelopment) {
       console.log(`[DEV] Incrémentation des vues pour l'article ${articleId}`);
       return 1; // Simuler l'incrémentation
