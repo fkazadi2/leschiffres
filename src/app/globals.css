@@ -1,0 +1,262 @@
+@import "tailwindcss";
+@tailwind utilities;
+
+:root {
+  /* Dark theme (par défaut) */
+  --bg-color: #0a0a0a;
+  --card-bg: #171717;
+  --text-color: #ffffff;
+  --text-color-rgb: 255, 255, 255;
+  --text-muted: #a0a0a0;
+  --border-color: #333333;
+  --primary: #e71b85;
+  --secondary: #3a95f2;
+  --accent: #9c32c2;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --shadow-color-dark: rgba(0, 0, 0, 0.5);
+  
+  /* Arrondis très accentués */
+  --border-radius-sm: 0.75rem;
+  --border-radius-md: 1.5rem;
+  --border-radius-lg: 2rem;
+  --border-radius-xl: 3rem;
+}
+
+:root[data-theme="light"] {
+  /* Light theme */
+  --bg-color: #f5f5f5;
+  --card-bg: #ffffff;
+  --text-color: #121212;
+  --text-color-rgb: 18, 18, 18;
+  --text-muted: #666666;
+  --border-color: #e0e0e0;
+  --primary: #e71b85;
+  --secondary: #3a95f2;
+  --accent: #9c32c2;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --shadow-color-dark: rgba(0, 0, 0, 0.2);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Ajuster ici si nécessaire pour la préférence dark */
+  }
+}
+
+/* Styles pour le corps */
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Effet de lueur pour les cartes */
+.card-glow {
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-glow:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px var(--shadow-color);
+}
+
+/* Animation de fondu à l'entrée */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
+.delay-400 { animation-delay: 0.4s; }
+.delay-500 { animation-delay: 0.5s; }
+
+/* Effet 3D au survol */
+.card-3d {
+  transition: transform 0.3s ease, box-shadow 0.4s ease;
+  box-shadow: 0 5px 15px var(--shadow-color);
+}
+
+.card-3d:hover {
+  transform: translateY(-8px) perspective(1000px) rotateX(2deg);
+  box-shadow: 0 15px 30px var(--shadow-color-dark);
+}
+
+/* Effet de bordure brillante */
+.border-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.border-shine::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(var(--text-color-rgb), 0.1), transparent);
+  transform: rotate(30deg);
+  transition: transform 0.8s ease;
+}
+
+.border-shine:hover::after {
+  transform: rotate(30deg) translate(50%, 50%);
+}
+
+/* Bouton animé */
+.btn-fancy {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  z-index: 1;
+}
+
+.btn-fancy::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  transition: width 0.3s ease;
+  z-index: -1;
+}
+
+.btn-fancy:hover::before {
+  width: 100%;
+}
+
+.btn-fancy:hover {
+  color: white;
+  border-color: transparent;
+}
+
+/* Effet de glassmorphisme */
+.glassmorphism {
+  background: rgba(var(--card-bg-rgb), 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--border-radius-lg);
+}
+
+/* Effet de texte néon */
+.neon-text {
+  text-shadow: 0 0 5px var(--primary), 0 0 10px var(--primary), 0 0 20px var(--primary);
+}
+
+/* Fond dégradé */
+.gradient-bg {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+}
+
+/* Effet de pulsation */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s infinite;
+}
+
+/* Scrollbar personnalisée */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(var(--text-color-rgb), 0.05);
+  border-radius: var(--border-radius-sm);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(var(--text-color-rgb), 0.2);
+  border-radius: var(--border-radius-sm);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(var(--text-color-rgb), 0.3);
+}
+
+/* Styles pour les bordures cyberpunk */
+.cyberpunk-border {
+  position: relative;
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+}
+
+.cyberpunk-border::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 2px solid transparent;
+  border-radius: var(--border-radius-lg);
+  background: linear-gradient(45deg, var(--primary), var(--secondary), var(--accent)) border-box;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.cyberpunk-border:hover::before {
+  opacity: 1;
+}
+
+/* Texte clair sur fond foncé dans les cartes d'articles */
+.article-card-overlay h3 {
+  color: #ffffff;
+}
+
+.article-card-overlay p, 
+.article-card-overlay span:not(.category-tag) {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.article-card-overlay .category-tag {
+  color: #ffffff;
+}
+
+/* Classe pour gérer les transitions de thème */
+.theme-transition,
+.theme-transition * {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 600ms !important;
+}
+
+/* Désactiver les transitions pendant le chargement initial */
+.no-transitions,
+.no-transitions * {
+  transition: none !important;
+}
